@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cystic Fibrosis</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f7fb;
+      color: #243447;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #163b65;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      margin: 0;
+      padding: 18px 10px 12px;
+      text-align: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 30px;
+    }
+
+    /* Breathing animation for all headings */
+    h1,
+    h2 {
+      animation: breathe 3s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
+    }
+
+    nav {
+      padding: 12px 15px 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      background-color: #2e6091;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.25s,
+                  transform 0.25s,
+                  box-shadow 0.25s;
+    }
+
+    nav a:hover {
+      background-color: #5b9bd5;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    nav a:active {
+      transform: scale(0.96);
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      background-color: white;
+      margin-bottom: 25px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      scroll-margin-top: 160px;
+      transition: background-color 0.3s,
+                  color 0.3s,
+                  transform 0.25s,
+                  box-shadow 0.25s;
+    }
+
+    /* Interactive section cards */
+    section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+    }
+
+    h2 {
+      color: #245b8f;
+      border-bottom: 2px solid #d6e8f7;
+      padding-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    h2:hover {
+      color: #5b9bd5;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    .content {
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .text {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .picture {
+      width: 300px;
+      max-width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+      background-color: #e3edf5;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    /* Images enlarge slightly when hovered */
+    .picture:hover {
+      transform: scale(1.04);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    footer {
+      text-align: center;
+      background-color: #163b65;
+      color: white;
+      padding: 20px;
+    }
+
+    /* Dark mode slider */
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      background-color: #aab8c5;
+      border-radius: 32px;
+      transition: 0.3s;
+    }
+
+    .slider::before {
+      content: "☀️";
+      position: absolute;
+      left: 3px;
+      bottom: 3px;
+      width: 26px;
+      height: 26px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .theme-switch input:checked + .slider {
+      background-color: #5b9bd5;
+    }
+
+    .theme-switch input:checked + .slider::before {
+      transform: translateX(28px);
+      content: "🌙";
+    }
+
+    .theme-switch input:focus-visible + .slider {
+      outline: 3px solid #8ec5ff;
+      outline-offset: 3px;
+    }
+
+    /* Dark theme */
+    body.dark-mode {
+      background-color: #121820;
+      color: #e8edf2;
+    }
+
+    body.dark-mode header {
+      background-color: #0b1118;
+    }
+
+    body.dark-mode section {
+      background-color: #202b38;
+      color: #e8edf2;
+    }
+
+    body.dark-mode h1 {
+      color: white;
+    }
+
+    body.dark-mode h2 {
+      color: #8ec5ff;
+      border-bottom-color: #40536a;
+    }
+
+    body.dark-mode h2:hover {
+      color: #c1e1ff;
+    }
+
+    body.dark-mode p {
+      color: #e8edf2;
+    }
+
+    body.dark-mode nav a {
+      background-color: #30445a;
+    }
+
+    body.dark-mode nav a:hover {
+      background-color: #5b9bd5;
+    }
+
+    body.dark-mode footer {
+      background-color: #0b1118;
+      color: white;
+    }
+
+    body.dark-mode .picture {
+      background-color: #303d4c;
+    }
+
+    body.dark-mode section:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Interactive lung-cleaning game */
+    .lung-game {
+      max-width: 700px;
+      margin: 20px auto 0;
+      padding: 20px;
+      text-align: center;
+      background: #f0f8fc;
+      color: #20344a;
+      border: 1px solid #d6e8f7;
+      border-radius: 16px;
+    }
+
+    .lung-scene {
+      width: 100%;
+      max-width: 390px;
+      margin: 10px auto;
+    }
+
+    .lung-scene svg {
+      display: block;
+      width: 100%;
+    }
+
+    .mucus-spot {
+      fill: #72b957;
+      stroke: #397d39;
+      stroke-width: 2;
+      cursor: pointer;
+      transition: opacity .25s, transform .25s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .mucus-spot:hover {
+      fill: #9ad875;
+      transform: scale(1.12);
+    }
+
+    .mucus-spot.cleaned {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(.2);
+    }
+
+    .game-timer {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #163b65;
+    }
+
+    .game-progress {
+      height: 16px;
+      margin: 16px 0 8px;
+      overflow: hidden;
+      background: #d4e2eb;
+      border-radius: 20px;
+    }
+
+    .game-progress-fill {
+      height: 100%;
+      width: 0;
+      background: #36a6a0;
+      transition: width .3s;
+    }
+
+    .lung-game button {
+      padding: 11px 20px;
+      margin: 8px 4px 0;
+      border: 0;
+      border-radius: 8px;
+      background: #163b65;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .lung-game button:hover {
+      background: #285a88;
+    }
+
+    #lung-message {
+      min-height: 26px;
+      font-weight: bold;
+      color: #24766d;
+    }
+
+    .game-note {
+      font-size: 13px;
+      color: #587083;
+    }
+
+    body.dark-mode .lung-game {
+      background: #202b38;
+      color: #e8edf2;
+      border-color: #40536a;
+    }
+
+    body.dark-mode .lung-game p {
+      color: #e8edf2;
+    }
+
+    body.dark-mode .game-timer {
+      color: #8ec5ff;
+    }
+
+    body.dark-mode #lung-message {
+      color: #8ee2d8;
+    }
+
+    body.dark-mode .game-note {
+      color: #c0ccd7;
+    }
+
+    /* Mobile layout */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      nav {
+        gap: 8px;
+        padding: 10px;
+      }
+
+      nav a {
+        flex: 1 1 28%;
+        padding: 10px 8px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      section {
+        scroll-margin-top: 190px;
+      }
+
+      .picture {
+        width: 100%;
+      }
+    }
+
+    /* Respect reduced-motion accessibility settings */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      h1,
+      h2 {
+        animation: none;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .gameinstructions{
+text-align: center;
+font-size: 23px;
+color:#24766d;
+font-weight: 650;
+
+
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Cystic Fibrosis</h1>
+
+    <nav>
+      <a href="#about">About</a>
+      <a href="#genetics">Genetics</a>
+      <a href="#diagnosis">Diagnosis</a>
+      <a href="#symptoms">Symptoms</a>
+      <a href="#treatment">Treatment</a>
+      <a href="#lung-game-section">Lung Game</a>
+      <a href="#references">References</a>
+
+      <label class="theme-switch" aria-label="Toggle dark mode">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="about">
+      <h2>About Cystic Fibrosis</h2>
+      <div class="content">
+        <div class="text">
+          <p><b>Cystic Fibrosis</b> is a genetic disease that affects roughly 165 000 people across 94 countries. It causes the patient to have abnormally thick mucus which can damage internal organs.</p>
+
+        </div>
+        <img class="picture"
+             src="https://media.post.rvohealth.io/wp-content/uploads/2023/07/3081005-cystic-fibrosis-lungs-1296x728-body.png"
+             alt="Illustration of cystic fibrosis affecting the lungs">
+      </div>
+    </section>
+
+    <section id="genetics">
+      <h2>Genetics</h2>
+      <div class="content">
+        <img class="picture" src="https://medlineplus.gov/images/PX00012C_PRESENTATION.jpeg" alt="Insert picture here">
+        <div class="text">
+          <p>Cystic Fibrosis is a mutation in the <b>CFTR</b>(Cystic Fibrosis Transmembrane Conductance Regulator) which is located in chromosome 7. It's a recessive gene so the person must inherit 2 mutated copies in order to have Cystic Fibrosis.</p>
+          <p> The <b>gene</b> controls how salt and water move in and out of cells. When it doesn’t work properly, the body makes thick, sticky mucus that affects the lungs, pancreas, and digestive system. </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="diagnosis">
+      <h2>Diagnosis</h2>
+      <div class="content">
+        <div class="text">
+          <p>The main method for diagnosing Cystic Fibrosis is the <b>Sweat test</b>. Other methods include <b>prenatal testing
+          </b>(testing during pregnacy), <b>Fecal Elastase Test</b>(testing the stool for a enzyme made by the pancreas), and <b>Newborn Screening</b>(A sample of blood is taken from the baby's heel and tested for immunoreactive trypsinogen) The <b>Nasal Potential Difference Test</b> is also used when other tests do not provide a clear answer. This test measures 	how salt moves across cells inside the nose.
+
+        </p>
+
+        </div>
+        <img class="picture" src="https://images.openai.com/static-rsc-4/lHGBic43v7da4DNLPUvI0EoETvVP-ftb1Lato64uFutcTqDOAeyKmYUHc9eikLXOlMd9mDF6lVvYqAiXyxCJx8ljA0jiFadYEhEZeYW5G0LmqFKxGnQ0ihKKebB6fWZRX8Zp1xAGhbLFECORC3Jd2eIPhe7f9CkL7MNTPgWxBELpKEI7peR-Pnc4rY2q3Z3k?purpose=fullsize" alt="Insert picture here">
+      </div>
+    </section>
+
+    <section id="symptoms">
+      <h2>Symptoms</h2>
+      <div class="content">
+        <img class="picture" src="https://images.everydayhealth.com/images/seo-graphic-content-initiative/eh-how-cystic-fibrosis-affects-the-body-seo-graphic.png?w=1110" alt="Insert picture here">
+        <div class="text">
+
+          <p><b>CF</b> symptoms can vary, depending on which organs are affected and how severe the condition is. The patient can experience infertility, pancreatitis (inflammation of the pancreas), salty skin, lung and sinus infections, severe constipation, wheezing, foul smelling poo, and getting tired easily. The symptoms can also get better or worse at different times. </p>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="treatment">
+      <h2>Treatment</h2>
+      <div class="content">
+        <div class="text">
+          <p>Unfortunetly, there are <b>no existing cures</b> for Cystic Fibrosis. However, there are treatments that can make the symptoms feel better such as antibiotics, muscus thinners, and <b>CFTR</b> modulators.</p>
+          <p><b>CFTR modulator therapies</b> are designed to correct the malfuntioning protein made by the mutated <b>CFTR</b> gene. Since different mutations cause different defects in the protein, the medications that have been developed so far are effective only in people with specific mutations.</p>
+        </div>
+        <img class="picture" src="https://images.openai.com/static-rsc-4/xKtrKznugXlnqx1pFBWtQcojQ2NMfROkfE_tAjkiEc5cGzO3EFRimQELELf2K32mpcxpfTgI5a9pXv6GR8OxU59RF7NhsKE59_ma9lzKuwbc4FaS0_VYAtHcjLuTqBjmYzhTr-oUSKQzjeLTmow_fVOU42Qfu2v9og_5LtKcZ-orp7VuPNSWEW_ily0WxLOu?purpose=fullsize" alt="Insert picture here">
+      </div>
+    </section>
+
+    <section id="lung-game-section">
+      <h2>Clean the Lungs 🫁</h2>
+      <div class="gameinstructions">
+      <p>Tap all 10 green mucus spots before the 5-second timer runs out.</p>
+      </div>
+      <div class="lung-game">
+        <div class="lung-scene">
+          <svg id="game-lungs" viewBox="0 0 400 350" role="img" aria-label="Illustration of lungs with ten clickable mucus spots">
+            <path d="M184 80 C153 55 120 73 101 105 C75 149 55 211 71 259 C83 295 123 301 153 279 C179 260 185 218 187 180 L187 105 Z" fill="#f49aab" stroke="#c9637b" stroke-width="4"/>
+            <path d="M216 80 C247 55 280 73 299 105 C325 149 345 211 329 259 C317 295 277 301 247 279 C221 260 215 218 213 180 L213 105 Z" fill="#f49aab" stroke="#c9637b" stroke-width="4"/>
+            <path d="M185 15 L185 95 Q185 110 200 123 Q215 110 215 95 L215 15 Z" fill="#f5c5ce" stroke="#c9637b" stroke-width="4"/>
+            <g fill="none" stroke="#c9637b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M200 115 L165 155 L133 187"/><path d="M200 115 L235 155 L267 187"/>
+              <path d="M165 155 L119 146"/><path d="M165 155 L166 209 L133 240"/>
+              <path d="M133 187 L103 204"/><path d="M235 155 L281 146"/>
+              <path d="M235 155 L234 209 L267 240"/><path d="M267 187 L297 204"/>
+            </g>
+            <g fill="none" stroke="#f8c3cd" stroke-width="4" stroke-linecap="round">
+              <path d="M200 117 L165 155 L133 187"/><path d="M200 117 L235 155 L267 187"/>
+              <path d="M165 155 L119 146"/><path d="M235 155 L281 146"/>
+              <path d="M165 155 L166 209 L133 240"/><path d="M235 155 L234 209 L267 240"/>
+            </g>
+            <g id="mucus-spots">
+              <circle class="mucus-spot" cx="127" cy="127" r="13" tabindex="0" role="button" aria-label="Clear mucus spot 1"/>
+              <circle class="mucus-spot" cx="151" cy="174" r="12" tabindex="0" role="button" aria-label="Clear mucus spot 2"/>
+              <circle class="mucus-spot" cx="103" cy="219" r="14" tabindex="0" role="button" aria-label="Clear mucus spot 3"/>
+              <circle class="mucus-spot" cx="153" cy="247" r="12" tabindex="0" role="button" aria-label="Clear mucus spot 4"/>
+              <circle class="mucus-spot" cx="174" cy="215" r="11" tabindex="0" role="button" aria-label="Clear mucus spot 5"/>
+              <circle class="mucus-spot" cx="273" cy="127" r="13" tabindex="0" role="button" aria-label="Clear mucus spot 6"/>
+              <circle class="mucus-spot" cx="249" cy="174" r="12" tabindex="0" role="button" aria-label="Clear mucus spot 7"/>
+              <circle class="mucus-spot" cx="297" cy="219" r="14" tabindex="0" role="button" aria-label="Clear mucus spot 8"/>
+              <circle class="mucus-spot" cx="247" cy="247" r="12" tabindex="0" role="button" aria-label="Clear mucus spot 9"/>
+              <circle class="mucus-spot" cx="226" cy="215" r="11" tabindex="0" role="button" aria-label="Clear mucus spot 10"/>
+            </g>
+          </svg>
+        </div>
+
+        <p class="game-timer" id="lung-timer" aria-live="polite">Time: 5s</p>
+        <p id="lung-counter">Mucus cleared: 0 / 10</p>
+
+        <div class="game-progress" id="lung-progress" role="progressbar" aria-label="Mucus spots cleared" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+          <div class="game-progress-fill" id="lung-progress-fill"></div>
+        </div>
+
+        <p id="lung-message" aria-live="polite">Tap a green spot to start the 5-second timer!</p>
+        <button type="button" id="lung-restart">Play Again</button>
+
+        <p class="game-note">This is a simulation of real airway-clearance treatments that help move mucus out of the lungs</p>
+      </div>
+    </section>
+
+    <section id="references">
+      <h2>References</h2>
+      <p>Cystic-Fibrosis.com. (2024, April). How common is cystic fibrosis and who does it affect? https://cystic-fibrosis.com/statistics </p>
+
+      <p>Everyday Health. (n.d.). How cystic fibrosis affects the body [Infographic]. https://images.everydayhealth.com/images/seo-graphic-content-initiative/eh-how-cystic-fibrosis-affects-the-body-seo-graphic.png?w=1110</p>
+
+      <p>Healthline. (2023, October 19). Cystic fibrosis lungs: Effects, treatments, and more. https://www.healthline.com/health/cystic-fibrosis/cystic-fibrosis-lungs</p>
+
+      <p>Mayo Clinic. (n.d.). Cystic fibrosis: Symptoms and causes. https://www.mayoclinic.org/diseases-conditions/cystic-fibrosis/symptoms-causes/syc-20353700 </p>
+
+      <p>Provincial Health Services Authority. (n.d.). Cystic Fibrosis Care BC. https://www.phsa.ca/our-services/programs-services/cystic-fibrosis-care-bc</p>
+
+      <p>Verywell Health. (n.d.). Cystic fibrosis symptoms [Image]. https://www.verywellhealth.com/thmb/k5Ukzs_0I-YqjlANz4DpvjqZf0k=/1500x0/filters:no_upscale():max_bytes(150000,strip_icc())/cystic-fibrosis-symptoms-5b290ad73037130036845813.png</p>
+
+
+
+
+    </section>
+
+  </main>
+
+  <footer>
+    Cystic Fibrosis Project
+  </footer>
+
+  <script>
+    // Toggle between light mode and dark mode
+    const themeToggle = document.getElementById("themeToggle");
+
+    themeToggle.addEventListener("change", function () {
+      document.body.classList.toggle(
+        "dark-mode",
+        themeToggle.checked
+      );
+    });
+
+    // Five-second lung-cleaning game
+    (() => {
+      const spots = document.querySelectorAll("#mucus-spots .mucus-spot");
+      const counter = document.getElementById("lung-counter");
+      const message = document.getElementById("lung-message");
+      const fill = document.getElementById("lung-progress-fill");
+      const progress = document.getElementById("lung-progress");
+      const timerDisplay = document.getElementById("lung-timer");
+      const restart = document.getElementById("lung-restart");
+
+      const startingTime = 5;
+      let cleaned = 0;
+      let timeLeft = startingTime;
+      let timerId = null;
+      let gameStarted = false;
+      let gameOver = false;
+
+      function updateGame() {
+        counter.textContent = `Mucus cleared: ${cleaned} / ${spots.length}`;
+        fill.style.width = `${cleaned / spots.length * 100}%`;
+        progress.setAttribute("aria-valuenow", cleaned);
+      }
+
+      function stopTimer() {
+        if (timerId !== null) {
+          clearInterval(timerId);
+          timerId = null;
+        }
+      }
+
+      function finishGame(won) {
+        gameOver = true;
+        stopTimer();
+
+        message.textContent = won
+          ? `🎉 You cleared all the mucus with ${timeLeft} seconds left!`
+          : `⏰ Time's up! You cleared ${cleaned} of ${spots.length} spots. Press Play Again to retry.`;
+      }
+
+      function startTimer() {
+        if (gameStarted || gameOver) return;
+
+        gameStarted = true;
+        message.textContent = "Go! Clear all the mucus before time runs out!";
+
+        timerId = setInterval(() => {
+          timeLeft--;
+          timerDisplay.textContent = `Time: ${timeLeft}s`;
+
+          if (timeLeft <= 0) {
+            timeLeft = 0;
+            timerDisplay.textContent = "Time: 0s";
+            finishGame(false);
+          }
+        }, 1000);
+      }
+
+      function cleanSpot(spot) {
+        if (gameOver || spot.classList.contains("cleaned")) return;
+
+        startTimer();
+        spot.classList.add("cleaned");
+        cleaned++;
+        updateGame();
+
+        if (cleaned === spots.length) {
+          finishGame(true);
+        } else {
+          message.textContent = "Nice work! Keep going!";
+        }
+      }
+
+      spots.forEach(spot => {
+        spot.addEventListener("click", () => cleanSpot(spot));
+
+        spot.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            cleanSpot(spot);
+          }
+        });
+      });
+
+      restart.addEventListener("click", () => {
+        stopTimer();
+
+        cleaned = 0;
+        timeLeft = startingTime;
+        gameStarted = false;
+        gameOver = false;
+
+        spots.forEach(spot => spot.classList.remove("cleaned"));
+
+        timerDisplay.textContent = `Time: ${startingTime}s`;
+        message.textContent = "Tap a green spot to start the 5-second timer!";
+
+        updateGame();
+      });
+
+      updateGame();
+    })();
+  </script>
+
+</body>
+</html>
